@@ -385,7 +385,7 @@ def edit_db():
     content_type_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     selection = ""
-    c_type = ""
+    # c_type
 
     while not selected:
         print("What would you like to do?\n"
@@ -462,8 +462,16 @@ def check_acct_adm():
 
 def check_acct(u_name, u_pass):
     print("Print user info")
-    # TODO: PRINT CHECKED OUT ITEMS
-    # TODO: PRINT OVERDUE
+    check_stmt = ("SELECT Patron_Account(AccountID, AccountPassword, PastDueItems, CheckedOutItems, Fees)"
+                  "FROM Patron_Account"
+                  "WHERE Patron(FirstName) = %s"
+                  "AND Patron(PatronID) = %s")
+    data = (u_name, u_pass)
+    try:
+        cursor.execute(check_stmt, data)
+        print_table(cursor)
+    except Error as check_err:
+        print(check_err, "\nUnable to Scan user_table")
 
 
 '''

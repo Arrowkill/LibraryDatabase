@@ -15,6 +15,7 @@ START OF SQL-BASED FUNCTIONS
 # item_id = ID of Item
 def check_in_out(io, table_type, item_id):
     print("Checking In/Out Item: ", item_id)
+    # TODO: FIX modify_stmt TO HAVE PROPER VALUES IN BRACKETS
     modify_stmt = ("UPDATE %s"
                    "SET [io_status] = %s"
                    "WHERE [item_id] = %s")
@@ -118,15 +119,35 @@ def anon_user_interface():
 
 
 def is_admin(uname, upass):
-    # TODO: Test if user is in Admin db
-    print("is_admin")
-    return True
+    # TODO: FIX scan_stmt TO HAVE PROPER VALUES IN BRACKETS
+    scan_stmt = ("SELECT [password]"
+                 "FROM [admin_table]"
+                 "WHERE [username] = %s")
+    data = (uname, )
+    try:
+        result = cursor.execute(scan_stmt, data)
+        if result == upass:
+            return True
+        else:
+            return False
+    except Error as scan_err:
+        print(scan_err, "\nUnable to Scan admin_table")
 
 
 def is_user(uname, upass):
-    # TODO: Test if user is in db
-    print("is_user")
-    return True
+    # TODO: FIX scan_stmt TO HAVE PROPER VALUES IN BRACKETS
+    scan_stmt = ("SELECT [password]"
+                 "FROM [user_table]"
+                 "WHERE [username] = %s")
+    data = (uname,)
+    try:
+        result = cursor.execute(scan_stmt, data)
+        if result == upass:
+            return True
+        else:
+            return False
+    except Error as scan_err:
+        print(scan_err, "\nUnable to Scan user_table")
 
 
 '''
@@ -330,7 +351,9 @@ def edit_db():
 
 
 def add_item(content_type):
-    print("add")
+    insert_stmt = "INSERT INTO %s(proper values)" \
+                  "VALUES (%s, %s, %s,)" \
+                  "WHERE [content_table]"
     # TODO: ADD CONTENT
 
 

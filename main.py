@@ -324,12 +324,45 @@ def check_avail():
 
 
 def print_availability(c_type):
+    if c_type == "1":
+        c_type = "Books"
+        gather_this = "Books(Title, Author, Genre, ISBN)"
+    elif c_type == "2":
+        c_type = "Magazines"
+        gather_this = "Magazines(Title, Author, Genre, ISSN)"
+    elif c_type == "3":
+        c_type = "DVD"
+        gather_this = "DVD(Title, Studio, Genre)"
+    elif c_type == "4":
+        c_type = "CD"
+        gather_this = "CD(Title, Author, Genre)"
+    elif c_type == "5":
+        c_type = "VHS_Tapes"
+        gather_this = "VHS_Tapes(Title, Studio, Genre)"
+    elif c_type == "6":
+        c_type = "Reference_Material"
+        gather_this = "Reference_Material(Title, Author)"
+    elif c_type == "7":
+        c_type = "Instruments"
+        gather_this = "Instruments(Instrument, InstrumentCondition, Accessories)"
+    elif c_type == "8":
+        c_type = "Consoles"
+        gather_this = "Consoles(ConsoleID, ConsoleDescription)"
+    elif c_type == "9":
+        c_type = "Study_Rooms"
+        gather_this = "Study_Rooms(RoomID, TimeSlot, RoomNumber)"
+    else:
+        gather_this = ""
+        print("Error 5")
+        exit(5)
     print("Availability Requested:", c_type)
-    print_stmt = ("SELECT [] "
-                  "FROM %s ")
-    # SELECT [status]
+    print_stmt = ("SELECT %s "
+                  "FROM %s "
+                  "WHERE IsOut = 1")
+    # SELECT gather_this
     # FROM table_type
-    data = (c_type,)
+    # WHERE IsOut = 1
+    data = (gather_this, c_type)
     try:
         cursor.execute(print_stmt, data)
         result = cursor.fetchall()

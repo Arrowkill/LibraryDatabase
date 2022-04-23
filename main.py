@@ -51,8 +51,8 @@ def check_in_out(io, table_type, item_id):
                    "SET IsOut = %s"
                    "WHERE %s = %s")
     # UPDATE table_type
-    # SET [io_status] = io
-    # WHERE [item_id] = item_id
+    # SET IsOut = io(type-casted bool)
+    # WHERE db_id = item_id
     if io == "IN":
         data = (table_type, "1", db_id, item_id)
     else:
@@ -153,11 +153,15 @@ def anon_user_interface():
 
 
 def is_admin(uname, upass):
-    # TODO: FIX scan_stmt TO HAVE PROPER VALUES IN BRACKETS
-    scan_stmt = ("SELECT [password]"
-                 "FROM [admin_table]"
-                 "WHERE [username] = %s")
-    data = (uname, )
+    scan_stmt = ("SELECT Library_Staff(StaffID)"
+                 "FROM Library_Staff"
+                 "WHERE EmployeeFirstName = %s"
+                 "AND StaffID = %s")
+    # SELECT Library_Staff(StaffID)
+    # FROM Library_Staff
+    # WHERE EmployeeFirstName = uname
+    # AND StaffID = upass
+    data = (uname, upass)
     try:
         result = cursor.execute(scan_stmt, data)
         if result == upass:
@@ -169,11 +173,15 @@ def is_admin(uname, upass):
 
 
 def is_user(uname, upass):
-    # TODO: FIX scan_stmt TO HAVE PROPER VALUES IN BRACKETS
-    scan_stmt = ("SELECT [password]"
-                 "FROM [user_table]"
-                 "WHERE [username] = %s")
-    data = (uname,)
+    scan_stmt = ("SELECT Patron(PatronID)"
+                 "FROM Patron"
+                 "WHERE FirstName = %s"
+                 "AND PatronID = %s")
+    # SELECT Patron(PatronID)
+    # FROM Patron
+    # WHERE FirstName = uname
+    # AND PatronID = upass
+    data = (uname, upass)
     try:
         result = cursor.execute(scan_stmt, data)
         if result == upass:

@@ -15,14 +15,48 @@ START OF SQL-BASED FUNCTIONS
 # item_id = ID of Item
 def check_in_out(io, table_type, item_id):
     print("Checking In/Out Item: ", item_id)
-    # TODO: FIX modify_stmt TO HAVE PROPER VALUES IN BRACKETS
+    if table_type == "1":
+        table_type = "Books"
+        db_id = "BookID"
+    elif table_type == "2":
+        table_type = "Magazines"
+        db_id = "MagazineID"
+    elif table_type == "3":
+        table_type = "DVD"
+        db_id = "DVDID"
+    elif table_type == "4":
+        table_type = "CD"
+        db_id = "CDID"
+    elif table_type == "5":
+        table_type = "VHS_Tapes"
+        db_id = "VHSID"
+    elif table_type == "6":
+        table_type = "Reference_Material"
+        db_id = "ReferenceID"
+    elif table_type == "7":
+        table_type = "Instruments"
+        db_id = "InstrumentID"
+    elif table_type == "8":
+        table_type = "Consoles"
+        db_id = "ConsoleID"
+    elif table_type == "9":
+        table_type = "Study_Rooms"
+        db_id = "RoomID"
+    else:
+        print("Error 4")
+        db_id = ""
+        exit(4)
+
     modify_stmt = ("UPDATE %s"
-                   "SET [io_status] = %s"
-                   "WHERE [item_id] = %s")
+                   "SET IsOut = %s"
+                   "WHERE %s = %s")
     # UPDATE table_type
     # SET [io_status] = io
     # WHERE [item_id] = item_id
-    data = (table_type, io, item_id)
+    if io == "IN":
+        data = (table_type, "1", db_id, item_id)
+    else:
+        data = (table_type, "0", db_id, item_id)
 
     try:
         cursor.execute(modify_stmt, data)
@@ -31,7 +65,7 @@ def check_in_out(io, table_type, item_id):
         print(modify_err, "\nRolling Back")
         connection.rollback()
     else:
-        if io == "In":
+        if io == "IN":
             print("Item checked in")
         else:
             print("Item checked out")
@@ -45,7 +79,7 @@ START OF UI FUNCTIONS
 
 
 # ADMIN INTERFACE
-def admin_interface(a_user, a_pass):
+def admin_interface():
     while True:
         # ADMIN Use Cases
         print("Would you like to:\n"
@@ -456,7 +490,7 @@ else:
 
     # ADMIN USER/LIBRARY STAFF
     if Admin:
-        admin_interface(user_name, user_pass)
+        admin_interface()
     # GENERIC USER
     elif not Anon:
         user_interface(user_name, user_pass)

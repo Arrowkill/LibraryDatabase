@@ -452,9 +452,9 @@ def check_acct_adm():
     u_name = ""
     u_pass = ""
     while not is_user(u_name, u_pass):
-        print("Input Patron Username:")
+        print("Input Patron First Name:")
         u_name = input()
-        print("Input Patron Password:")
+        print("Input PatronID:")
         u_pass = input()
     # TODO OPTION: edit user info
     check_acct(u_name, u_pass)
@@ -473,9 +473,48 @@ CREATE ACCOUNT
 
 
 def create_acct():
-    print("Add_User")
-    # TODO: GET USER INFO
-    # TODO: UPDATE USER LIST TO INCLUDE NEW ACCOUNT
+    print("Please input the following information when prompted.\n"
+          "First Name:")
+    first_name = input()
+    print("Last Name:")
+    last_name = input()
+    print("Date Of Birth, formatted YYYY-MM-DD:")
+    date_of_birth = input()
+    print("Email address, including domain, i.e. @gmail.com, @yahoo.com:")
+    email_address = input()
+    print("Your Physical Home Address")
+    home_address = input()
+    print("Your Phone Number formatted as all digits:")
+    phone_number = input()
+    print("A password for your account:")
+    patron_password = input()
+    try:
+        cursor.execute("SELECT count(*) FROM Patron")
+    except Error as count_err:
+        print(count_err, "Unable to determine patron ID")
+    else:
+        result = cursor.fetchall()
+        patron_id = result + 1
+
+    print("Your Patron ID is:{0}Please keep this information safe.".format(patron_id))
+
+    insert_stmt = ("INSERT INTO Patron(FirstName, LastName, DateOfBirth, Email, Address, PatronID, PhoneNumber)"
+                   "VALUES (%s, %s, %s, %s, %s, %s, %s )")
+    data = (first_name, last_name, date_of_birth, email_address, home_address, patron_id, phone_number)
+
+    insert_acct_stmt = ("INSERT INTO Patron_Account(AccountID, AccountPassword, PastDueItems, CheckedOutItems, Fees"
+                        "VALUES (%s, %s, %s, %s, %s)")
+    acct_data = (patron_id, patron_password, 0, 0, 0)
+
+    try:
+        cursor.execute(insert_stmt, data)
+        cursor.execute(insert_acct_stmt, acct_data)
+        connection.commit()
+    except Error as insert_err:
+        print(insert_err, "Rolling back")
+        connection.rollback()
+    else:
+        print("Added new account")
 
 
 '''
@@ -510,23 +549,22 @@ except Error as e:
 else:
     cursor = connection.cursor()
     Admin = False
-    Anon = False
+    Anon = True
 
     # GET USER CREDENTIALS
-    print("Please input your username, if you have no account, leave blank")
+    print("Please input your First Name, if you have no account, leave blank")
     user_name = input()
     user_pass = ""
     if user_name == "":
-        Anon = True
+        print("Anonymous User")
     else:
-        print("Please input your password")
+        print("Please input your account ID")
         user_pass = input()
 
     if is_admin(user_name, user_pass):
         Admin = True
-        User = True
     elif is_user(user_name, user_pass):
-        User = True
+        Anon = False
     # END OF GET USER CREDENTIALS
 
     # ADMIN USER/LIBRARY STAFF

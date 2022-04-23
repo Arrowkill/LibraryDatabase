@@ -20,6 +20,7 @@ create table CD (
 	Title varchar(256) not null,
     Author varchar(256) not null,
     Genre varchar(256) not null,
+    IsOut bool not null,
     RentalPeriod varchar(256) not null,
     CDID varchar(64) not null,
     primary key (CDID)
@@ -28,6 +29,7 @@ create table DVD (
 	Title varchar(256) not null,
     Studio varchar(256) not null,
     Genre varchar(256) not null,
+    IsOut bool not null,
     RentalPeriod varchar(256) not null,
     DVDID varchar(64),
     primary key (DVDID)
@@ -37,6 +39,7 @@ create table Magazines (
     Author varchar(256) not null,
     Genre varchar(256) not null,
     ISSN varchar(64) not null,
+    IsOut bool not null,
     RentalPeriod varchar(256) not null,
     MagazineID varchar(64) not null,
     primary key (MagazineID, ISSN)
@@ -45,6 +48,7 @@ create table VHS_Tapes (
 	Title varchar(256) not null,
     Studio varchar(256) not null,
     Genre varchar(256) not null,
+    IsOut bool not null,
     RentalPeriod varchar(256) not null,
     VHSID varchar(64) not null,
     primary key (VHSID)
@@ -52,6 +56,7 @@ create table VHS_Tapes (
 create table Reference_Material (
 	Title varchar(256) not null,
     Author varchar(256) not null,
+    IsOut bool not null,
     RentalPeriod varchar(256) not null,
     ReferenceID varchar(64) not null,
     primary key (ReferenceID)
@@ -61,6 +66,7 @@ create table Books (
     Author varchar(256) not null,
     Genre varchar(256) not null,
     ISBN varchar(64) not null,
+    IsOut bool not null,
     RentalPeriod varchar(256) not null,
     BookID varchar(64) not null,
     primary key (BookID, ISBN)
@@ -70,6 +76,7 @@ create table Instruments (
     Instrument varchar(256) not null,
     InstrumentCondition blob not null,
     Accessories blob not null,
+    IsOut bool not null,
     primary key (InstrumentID)
 );
 create table Printing (
@@ -82,6 +89,7 @@ create table Printing (
 create table Consoles (
 	ConsoleID varchar(64) not null,
     ConsoleDescription varchar(256) not null,
+    IsOut bool not null,
     TimeSlot time not null,
     primary key (ConsoleID)
 );
@@ -89,6 +97,7 @@ create table Study_Rooms (
 	RoomID varchar(64) not null,
     TimeSlot time not null,
     RoomNumber numeric(3, 0) check (RoomNumber > 0),
+    IsOut bool not null,
     primary key (RoomID)
 );
 create table Vendor (

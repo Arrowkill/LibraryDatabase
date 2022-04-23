@@ -1,11 +1,43 @@
 import mysql.connector
 from mysql.connector import Error
 
-
 '''
 Developed by Jackson Johanek for UNT CSCE 4350
 
 START FUNCTION DECLARATIONS
+
+START OF SQL-BASED FUNCTIONS
+'''
+
+
+# io = In/Out
+# table_type = Type of Item
+# item_id = ID of Item
+def check_in_out(io, table_type, item_id):
+    print("Checking In/Out Item: ", item_id)
+    modify_stmt = ("UPDATE %s"
+                   "SET [io_status] = %s"
+                   "WHERE [item_id] = %s")
+    # UPDATE table_type
+    # SET [io_status] = io
+    # WHERE [item_id] = item_id
+    data = (table_type, io, item_id)
+
+    try:
+        cursor.execute(modify_stmt, data)
+        connection.commit()
+    except Error as modify_err:
+        print(modify_err, "\nRolling Back")
+        connection.rollback()
+    else:
+        if io == "In":
+            print("Item checked in")
+        else:
+            print("Item checked out")
+
+
+'''
+END OF SQL-BASED FUNCTIONS
 
 START OF UI FUNCTIONS
 '''
@@ -126,6 +158,7 @@ def check_in():
         u_pass = input()
 
     done = False
+    c_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     while not done:
         print("What type of Content is being turned in:\n"
@@ -139,84 +172,24 @@ def check_in():
               "8.Console\n"
               "9.Study Room\n"
               "Done.Finished with checking out")
-        c_type = input()    # Content Type
+        c_type = input()  # Content Type
         if c_type == "Done":
             done = True
         else:
             print("Provide Content ID:")
-            c_id = input()      # Content ID
+            c_id = input()  # Content ID
 
-            if c_type == "1":
-                book_in(u_name, c_id)
-            elif c_type == "2":
-                magazine_in(u_name, c_id)
-            elif c_type == "3":
-                dvd_in(u_name, c_id)
-            elif c_type == "4":
-                cd_in(u_name, c_id)
-            elif c_type == "5":
-                vhs_in(u_name, c_id)
-            elif c_type == "6":
-                ref_in(u_name, c_id)
-            elif c_type == "7":
-                instrument_in(u_name, c_id)
-            elif c_type == "8":
-                console_in(u_name, c_id)
-            elif c_type == "9":
-                study_in(u_name, c_id)
+            if c_type in c_list:
+                check_in_out("IN", u_name, c_id)
             else:
                 print("Unrecognized Command")
-
-
-def book_in(u_name, c_id):
-    print("Check in book")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def magazine_in(u_name, c_id):
-    print("Check in magazine")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def dvd_in(u_name, c_id):
-    print("Check in dvd")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def cd_in(u_name, c_id):
-    print("Check in cd")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def vhs_in(u_name, c_id):
-    print("Check in vhs")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def ref_in(u_name, c_id):
-    print("Check in reference material")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def instrument_in(u_name, c_id):
-    print("Check in instrument")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def console_in(u_name, c_id):
-    print("Check in console")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
-
-
-def study_in(u_name, c_id):
-    print("Check in study room")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_IN"
 
 
 '''
 END OF CHECK IN FUNCTIONS
 CHECK OUT FUNCTIONS
 '''
+
 
 def check_out():
     u_name = ""
@@ -228,6 +201,7 @@ def check_out():
         u_pass = input()
 
     done = False
+    c_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     while not done:
         print("What type of Content is being checked out:\n"
@@ -248,71 +222,10 @@ def check_out():
             print("Provide Content ID:")
             c_id = input()  # Content ID
 
-            if c_type == "1":
-                book_out(u_name, c_id)
-            elif c_type == "2":
-                magazine_out(u_name, c_id)
-            elif c_type == "3":
-                dvd_out(u_name, c_id)
-            elif c_type == "4":
-                cd_out(u_name, c_id)
-            elif c_type == "5":
-                vhs_out(u_name, c_id)
-            elif c_type == "6":
-                ref_out(u_name, c_id)
-            elif c_type == "7":
-                instrument_out(u_name, c_id)
-            elif c_type == "8":
-                console_out(u_name, c_id)
-            elif c_type == "9":
-                study_out(u_name, c_id)
+            if c_type in c_list:
+                check_in_out("OUT", u_name, c_id)
             else:
                 print("Unrecognized Command")
-
-
-def book_out(u_name, c_id):
-    print("Check out book")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def magazine_out(u_name, c_id):
-    print("Check out magazine")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def dvd_out(u_name, c_id):
-    print("Check out dvd")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def cd_out(u_name, c_id):
-    print("Check out cd")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def vhs_out(u_name, c_id):
-    print("Check out vhs")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def ref_out(u_name, c_id):
-    print("Check out reference material")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def instrument_out(u_name, c_id):
-    print("Check out instrument")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def console_out(u_name, c_id):
-    print("Check out console")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
-
-
-def study_out(u_name, c_id):
-    print("Check out study room")
-    # TODO: CHANGE STATUS OF ITEM TO "CHECKED_OUT"
 
 
 '''
@@ -323,7 +236,7 @@ CHECK AVAILABILITY
 
 def check_avail():
     done = False
-    content_type_list = ["1","2","3","4","5","6","7","8","9"]
+    content_type_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     while not done:
         print("What type of Content would you like to see availability for:\n"
@@ -349,6 +262,18 @@ def check_avail():
 
 def print_availability(c_type):
     print("Availability Requested:", c_type)
+    print_stmt = ("SELECT [] "
+                  "FROM %s ")
+    # SELECT [status]
+    # FROM table_type
+    data = (c_type,)
+    try:
+        cursor.execute(print_stmt, data)
+        result = cursor.fetchall()
+        for x in result:
+            print(x)
+    except Error as print_err:
+        print(print_err, "\nPrinting Error")
 
 
 '''
@@ -360,7 +285,7 @@ EDIT DATABASE
 def edit_db():
     selected = False
     done = False
-    selection_list = ["1","2","3"]
+    selection_list = ["1", "2", "3"]
     content_type_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     selection = ""
@@ -371,7 +296,7 @@ def edit_db():
               "1.Add Item\n"
               "2.Delete Item\n"
               "3.Edit Item")
-        selection = input()     # Edit Type
+        selection = input()  # Edit Type
         if selection in selection_list:
             selected = True
         else:

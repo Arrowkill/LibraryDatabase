@@ -47,8 +47,8 @@ def check_in_out(io, table_type, item_id):
         db_id = ""
         exit(4)
 
-    modify_stmt = ("UPDATE %s"
-                   "SET IsOut = %s"
+    modify_stmt = ("UPDATE %s "
+                   "SET IsOut = %s "
                    "WHERE %s = %s")
     # UPDATE table_type
     # SET IsOut = io(type-casted bool)
@@ -153,9 +153,9 @@ def anon_user_interface():
 
 
 def is_admin(uname, upass):
-    scan_stmt = ("SELECT Library_Staff(StaffID)"
-                 "FROM Library_Staff"
-                 "WHERE EmployeeFirstName = %s"
+    scan_stmt = ("SELECT Library_Staff(StaffID) "
+                 "FROM Library_Staff "
+                 "WHERE EmployeeFirstName = %s "
                  "AND StaffID = %s")
     # SELECT Library_Staff(StaffID)
     # FROM Library_Staff
@@ -173,9 +173,9 @@ def is_admin(uname, upass):
 
 
 def is_user(uname, upass):
-    scan_stmt = ("SELECT Patron(PatronID)"
-                 "FROM Patron"
-                 "WHERE FirstName = %s"
+    scan_stmt = ("SELECT Patron(PatronID) "
+                 "FROM Patron "
+                 "WHERE FirstName = %s "
                  "AND PatronID = %s")
     # SELECT Patron(PatronID)
     # FROM Patron
@@ -425,11 +425,219 @@ def edit_db():
                 print("Unrecognized Command")
 
 
-def add_item(content_type):
-    insert_stmt = "INSERT INTO %s(proper values)" \
-                  "VALUES (%s, %s, %s,)" \
-                  "WHERE [content_table]"
-    # TODO: ADD CONTENT
+def add_item(table_type):
+    if table_type == "1":
+        insert_stmt = ("INSERT INTO Books(Title, Author, Genre, ISBN, IsOut, RentalPeriod, BookID) "
+                       "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "Title:")
+        b_title = input()
+        print("Author:")
+        b_author = input()
+        print("Genre:")
+        b_genre = input()
+        print("ISBN:")
+        b_isbn = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("RentalPeriod:")
+        rental_period = input()
+        print("BookID")
+        b_id = input()
+        data = (b_title, b_author, b_genre, b_isbn, is_out, rental_period, b_id)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add Book")
+        else:
+            print("Book added successfully")
+            
+    elif table_type == "2":
+        insert_stmt = ("INSERT INTO Magazines(Title,Author,Genre,ISSN,IsOut,RentalPeriod,MagazineID)"
+                       "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "Title:")
+        m_title = input()
+        print("Author:")
+        m_author = input()
+        print("Genre:")
+        m_genre = input()
+        print("ISBN:")
+        m_isbn = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("RentalPeriod:")
+        rental_period = input()
+        print("BookID")
+        m_id = input()
+        data = (m_title, m_author, m_genre, m_isbn, is_out, rental_period, m_id)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add Magazine")
+        else:
+            print("Magazine added successfully")
+            
+    elif table_type == "3":
+        insert_stmt = ("INSERT INTO DVD(Title,Studio,Genre,IsOut,RentalPeriod,DVDID)"
+                       "VALUES (%s, %s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "Title:")
+        d_title = input()
+        print("Author:")
+        d_studio = input()
+        print("Genre:")
+        d_genre = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("RentalPeriod:")
+        rental_period = input()
+        print("BookID")
+        d_id = input()
+        data = (d_title, d_studio, d_genre, is_out, rental_period, d_id)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add DVD")
+        else:
+            print("DVD added successfully")
+        
+    elif table_type == "4":
+        insert_stmt = ("INSERT INTO CD(Title,Author,Genre,IsOut,RentalPeriod,CDID)"
+                       "VALUES (%s, %s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "Title:")
+        c_title = input()
+        print("Author:")
+        c_author = input()
+        print("Genre:")
+        c_genre = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("RentalPeriod:")
+        rental_period = input()
+        print("BookID")
+        c_id = input()
+        data = (c_title, c_author, c_genre, is_out, rental_period, c_id)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add CD")
+        else:
+            print("CD added successfully")
+        
+    elif table_type == "5":
+        insert_stmt = ("INSERT INTO VHS_Tapes(Title,Studio,Genre,IsOut,RentalPeriod,VHSID)"
+                       "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "Title:")
+        v_title = input()
+        print("Author:")
+        v_studio = input()
+        print("Genre:")
+        v_genre = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("RentalPeriod:")
+        rental_period = input()
+        print("BookID")
+        v_id = input()
+        data = (v_title, v_studio, v_genre, is_out, rental_period, v_id)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add VHS")
+        else:
+            print("VHS added successfully")
+    
+    elif table_type == "6":
+        insert_stmt = ("INSERT INTO Reference_Material(Title,Author,IsOut,RentalPeriod,ReferenceID)"
+                       "VALUES (%s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "Title:")
+        r_title = input()
+        print("Author:")
+        r_author = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("RentalPeriod:")
+        rental_period = input()
+        print("BookID")
+        r_id = input()
+        data = (r_title, r_author, is_out, rental_period, r_id)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add Reference Material")
+        else:
+            print("Reference Material added successfully")
+        
+    elif table_type == "7":
+        insert_stmt = ("INSERT INTO Instruments(InstrumentID, Instrument, InstrumentCondition, Accessories, IsOut)"
+                       "VALUES (%s, %s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "InstrumentID:")
+        i_id = input()
+        print("Instrument:")
+        i_name = input()
+        print("InstrumentCondition:")
+        i_cond = input()
+        print("Accessories:")
+        i_acc = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        data = (i_id, i_name, i_cond, i_acc, is_out)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add Instrument")
+        else:
+            print("Instrument added successfully")
+        
+    elif table_type == "8":
+        insert_stmt = ("INSERT INTO Consoles(ConsoleID, ConsoleDescription, IsOut, TimeSlot)"
+                       "VALUES (%s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "ConsoleID:")
+        c_id = input()
+        print("Console Description:")
+        c_desc = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        print("Time Slot:")
+        c_time_slot = input()
+        data = (c_id, c_desc, is_out, c_time_slot)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add Console")
+        else:
+            print("Console added successfully")
+        
+    elif table_type == "9":
+        insert_stmt = ("INSERT INTO Study_Rooms(RoomID, TimeSlot, RoomNumber, IsOut)"
+                       "VALUES (%s, %s, %s, %s)")
+        print("Please input the following information:\n"
+              "RoomID:")
+        r_id = input()
+        print("Time Slot:")
+        time_slot = input()
+        print("Room Number:")
+        room_numb = input()
+        print("Is the content in stock?:")
+        is_out = input()
+        data = (r_id, time_slot, room_numb, is_out)
+        try:
+            cursor.execute(insert_stmt, data)
+        except Error as add_err:
+            print(add_err, "\nUnable to add Room")
+        else:
+            print("Room added successfully")
+        
+    else:
+        print("Error 5")
+        db_id = ""
+        exit(5)
 
 
 def delete_item(content_type):
@@ -462,9 +670,9 @@ def check_acct_adm():
 
 def check_acct(u_name, u_pass):
     print("Print user info")
-    check_stmt = ("SELECT Patron_Account(AccountID, AccountPassword, PastDueItems, CheckedOutItems, Fees)"
-                  "FROM Patron_Account"
-                  "WHERE Patron(FirstName) = %s"
+    check_stmt = ("SELECT Patron_Account(AccountID, AccountPassword, PastDueItems, CheckedOutItems, Fees) "
+                  "FROM Patron_Account "
+                  "WHERE Patron(FirstName) = %s "
                   "AND Patron(PatronID) = %s")
     data = (u_name, u_pass)
     try:
@@ -506,11 +714,11 @@ def create_acct():
 
     print("Your Patron ID is:{0}Please keep this information safe.".format(patron_id))
 
-    insert_stmt = ("INSERT INTO Patron(FirstName, LastName, DateOfBirth, Email, Address, PatronID, PhoneNumber)"
+    insert_stmt = ("INSERT INTO Patron(FirstName, LastName, DateOfBirth, Email, Address, PatronID, PhoneNumber) "
                    "VALUES (%s, %s, %s, %s, %s, %s, %s )")
     data = (first_name, last_name, date_of_birth, email_address, home_address, patron_id, phone_number)
 
-    insert_acct_stmt = ("INSERT INTO Patron_Account(AccountID, AccountPassword, PastDueItems, CheckedOutItems, Fees"
+    insert_acct_stmt = ("INSERT INTO Patron_Account(AccountID, AccountPassword, PastDueItems, CheckedOutItems, Fees) "
                         "VALUES (%s, %s, %s, %s, %s)")
     acct_data = (patron_id, patron_password, 0, 0, 0)
 

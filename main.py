@@ -451,7 +451,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add Book")
         else:
             print("Book added successfully")
-            
+
     elif table_type == "2":
         insert_stmt = ("INSERT INTO Magazines(Title,Author,Genre,ISSN,IsOut,RentalPeriod,MagazineID)"
                        "VALUES (%s, %s, %s, %s, %s, %s, %s)")
@@ -477,7 +477,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add Magazine")
         else:
             print("Magazine added successfully")
-            
+
     elif table_type == "3":
         insert_stmt = ("INSERT INTO DVD(Title,Studio,Genre,IsOut,RentalPeriod,DVDID)"
                        "VALUES (%s, %s, %s, %s, %s, %s)")
@@ -501,7 +501,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add DVD")
         else:
             print("DVD added successfully")
-        
+
     elif table_type == "4":
         insert_stmt = ("INSERT INTO CD(Title,Author,Genre,IsOut,RentalPeriod,CDID)"
                        "VALUES (%s, %s, %s, %s, %s, %s)")
@@ -525,7 +525,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add CD")
         else:
             print("CD added successfully")
-        
+
     elif table_type == "5":
         insert_stmt = ("INSERT INTO VHS_Tapes(Title,Studio,Genre,IsOut,RentalPeriod,VHSID)"
                        "VALUES (%s, %s, %s, %s, %s, %s, %s)")
@@ -549,7 +549,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add VHS")
         else:
             print("VHS added successfully")
-    
+
     elif table_type == "6":
         insert_stmt = ("INSERT INTO Reference_Material(Title,Author,IsOut,RentalPeriod,ReferenceID)"
                        "VALUES (%s, %s, %s, %s, %s)")
@@ -571,7 +571,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add Reference Material")
         else:
             print("Reference Material added successfully")
-        
+
     elif table_type == "7":
         insert_stmt = ("INSERT INTO Instruments(InstrumentID, Instrument, InstrumentCondition, Accessories, IsOut)"
                        "VALUES (%s, %s, %s, %s, %s)")
@@ -593,7 +593,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add Instrument")
         else:
             print("Instrument added successfully")
-        
+
     elif table_type == "8":
         insert_stmt = ("INSERT INTO Consoles(ConsoleID, ConsoleDescription, IsOut, TimeSlot)"
                        "VALUES (%s, %s, %s, %s)")
@@ -613,7 +613,7 @@ def add_item(table_type):
             print(add_err, "\nUnable to add Console")
         else:
             print("Console added successfully")
-        
+
     elif table_type == "9":
         insert_stmt = ("INSERT INTO Study_Rooms(RoomID, TimeSlot, RoomNumber, IsOut)"
                        "VALUES (%s, %s, %s, %s)")
@@ -633,16 +633,61 @@ def add_item(table_type):
             print(add_err, "\nUnable to add Room")
         else:
             print("Room added successfully")
-        
+
     else:
         print("Error 5")
         db_id = ""
         exit(5)
 
 
-def delete_item(content_type):
-    print("delete")
-    # TODO: DELETE CONTENT
+def delete_item(table_type):
+    print("Please supply the content ID")
+    c_id = input()
+
+    if table_type == "1":
+        table_type = "Books"
+        db_id = "BookID"
+    elif table_type == "2":
+        table_type = "Magazines"
+        db_id = "MagazineID"
+    elif table_type == "3":
+        table_type = "DVD"
+        db_id = "DVDID"
+    elif table_type == "4":
+        table_type = "CD"
+        db_id = "CDID"
+    elif table_type == "5":
+        table_type = "VHS_Tapes"
+        db_id = "VHSID"
+    elif table_type == "6":
+        table_type = "Reference_Material"
+        db_id = "ReferenceID"
+    elif table_type == "7":
+        table_type = "Instruments"
+        db_id = "InstrumentID"
+    elif table_type == "8":
+        table_type = "Consoles"
+        db_id = "ConsoleID"
+    elif table_type == "9":
+        table_type = "Study_Rooms"
+        db_id = "RoomID"
+    else:
+        print("Error 6")
+        db_id = ""
+        exit(6)
+
+    delete_stmt = ("DELETE FROM %s "
+                   "WHERE %s = %s")
+    data = (table_type, db_id, c_id)
+    
+    try:
+        cursor.execute(delete_stmt, data)
+        connection.commit()
+    except Error as delete_err:
+        print(delete_err, "Rolling Back")
+        connection.rollback()
+    else:
+        print("Deletion Successful")
 
 
 def edit_item(content_type):

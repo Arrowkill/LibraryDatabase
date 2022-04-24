@@ -679,7 +679,7 @@ def delete_item(table_type):
     delete_stmt = ("DELETE FROM %s "
                    "WHERE %s = %s")
     data = (table_type, db_id, c_id)
-    
+
     try:
         cursor.execute(delete_stmt, data)
         connection.commit()
@@ -690,9 +690,174 @@ def delete_item(table_type):
         print("Deletion Successful")
 
 
-def edit_item(content_type):
-    print("edit")
-    # TODO: EDIT CONTENT
+def edit_item(table_type):
+    if table_type == "1":
+        table_type = "Books"
+        db_id = "BookID"
+        print("Input Book ID")
+        item_id = input()
+        print("What would you like to edit about this Book\n"
+              "1.Title\n"
+              "2.Author\n"
+              "3.Genre\n"
+              "4.ISBN\n"
+              "5.IsOut\n"
+              "6.RentalPeriod\n"
+              "7.BookID\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5, 6, 7]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "2":
+        table_type = "Magazines"
+        db_id = "MagazineID"
+        print("Input Magazine ID")
+        item_id = input()
+        print("What would you like to edit about this Magazine\n"
+              "1.Title\n"
+              "2.Author\n"
+              "3.Genre\n"
+              "4.ISSN\n"
+              "5.IsOut\n"
+              "6.RentalPeriod\n"
+              "7.MagazineID\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5, 6, 7]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "3":
+        table_type = "DVD"
+        db_id = "DVDID"
+        print("Input DVD ID")
+        item_id = input()
+        print("What would you like to edit about this DVD\n"
+              "1.Title\n"
+              "2.Studio\n"
+              "3.Genre\n"
+              "4.IsOut\n"
+              "5.RentalPeriod\n"
+              "6.DVDID\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5, 6]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "4":
+        table_type = "CD"
+        db_id = "CDID"
+        print("Input CD ID")
+        item_id = input()
+        print("What would you like to edit about this CD\n"
+              "1.Title\n"
+              "2.Author\n"
+              "3.Genre\n"
+              "4.IsOut\n"
+              "5.RentalPeriod\n"
+              "6.DVDID\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5, 6]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "5":
+        table_type = "VHS_Tapes"
+        db_id = "VHSID"
+        print("Input VHS ID")
+        item_id = input()
+        print("What would you like to edit about this VHS Tape\n"
+              "1.Title\n"
+              "2.Studio\n"
+              "3.Genre\n"
+              "4.IsOut\n"
+              "5.RentalPeriod\n"
+              "6.VHSID\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5, 6]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "6":
+        table_type = "Reference_Material"
+        db_id = "ReferenceID"
+        print("Input Reference ID")
+        item_id = input()
+        print("What would you like to edit about this Reference Material\n"
+              "1.Title\n"
+              "2.Studio\n"
+              "3.IsOut\n"
+              "4.RentalPeriod\n"
+              "5.ReferenceID\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5, 6]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "7":
+        table_type = "Instruments"
+        db_id = "InstrumentID"
+        print("Input Instrument ID")
+        item_id = input()
+        print("What would you like to edit about this Instrument\n"
+              "1.InstrumentID\n"
+              "2.Name\n"
+              "3.Condition\n"
+              "4.Accessories\n"
+              "5.IsOut\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4, 5]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "8":
+        table_type = "Consoles"
+        db_id = "ConsoleID"
+        print("Input Console ID")
+        item_id = input()
+        print("What would you like to edit about this Console\n"
+              "1.Console ID\n"
+              "2.Description\n"
+              "3.IsOut\n"
+              "4.Time Slot\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4]:
+            print("Not Found, Error code 10")
+            exit(10)
+    elif table_type == "9":
+        table_type = "Study_Rooms"
+        db_id = "RoomID"
+        print("Input Room ID")
+        item_id = input()
+        print("What would you like to edit about this Room\n"
+              "1.Room ID\n"
+              "2.Time Slot\n"
+              "3.Room Number\n"
+              "4.IsOut\n")
+        col_num = input()
+        if col_num not in [1, 2, 3, 4]:
+            print("Not Found, Error code 10")
+            exit(10)
+    else:
+        print("Error 7")
+        db_id = ""
+        item_id = ""
+        col_num = ""
+        exit(7)
+
+    # Get new value from user
+    print("What would you like this value to be changed to?")
+    value = input()
+    edit_col(table_type, db_id, item_id, col_num, value)
+
+
+def edit_col(content_type, db_id, item_id, col_num, value):
+    modify_stmt = ("UPDATE %s "
+                   "SET %s=%s "
+                   "WHERE %s = %s")
+    data = (content_type, col_num, value, db_id, item_id)
+    
+    try:
+        cursor.execute(modify_stmt, data)
+        connection.commit()
+    except Error as modify_err:
+        print(modify_err, "\nRolling Back")
+        connection.rollback()
+    else:
+        print("Updated Item")
 
 
 '''
@@ -734,6 +899,7 @@ CREATE ACCOUNT
 
 
 def create_acct():
+    patron_id = ""
     print("Please input the following information when prompted.\n"
           "First Name:")
     first_name = input()

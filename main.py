@@ -636,7 +636,6 @@ def add_item(table_type):
 
     else:
         print("Error 5")
-        db_id = ""
         exit(5)
 
 
@@ -849,7 +848,7 @@ def edit_col(content_type, db_id, item_id, col_num, value):
                    "SET %s=%s "
                    "WHERE %s = %s")
     data = (content_type, col_num, value, db_id, item_id)
-    
+
     try:
         cursor.execute(modify_stmt, data)
         connection.commit()

@@ -74,8 +74,8 @@ create table Books (
 create table Instruments (
 	InstrumentID varchar(64) not null,
     Instrument varchar(256) not null,
-    InstrumentCondition blob not null,
-    Accessories blob not null,
+    InstrumentCondition text not null,
+    Accessories text not null,
     IsOut bool not null,
     primary key (InstrumentID)
 );
@@ -108,7 +108,6 @@ create table Vendor (
 );
 create table Vendor_Order (
 	OrderID varchar(64) not null,
-    ItemID varchar(64) not null,
     Total numeric(9, 2) check (Total > 0),
     CreatedOn date not null,
     primary key (OrderID)
@@ -135,7 +134,7 @@ create table Rental_Cart (
     EmployeeID varchar(64) not null,
     DateTimestamp date not null,
     AmountDue numeric(9, 2) check (AmountDue >= 0),
-    Note blob,
+    Note text,
     primary key (CartID),
     foreign key (EmployeeID) references Library_Staff (StaffID) on delete cascade,
     foreign key (PatronAccountID) references Patron_Account (AccountID) on delete cascade
@@ -198,7 +197,7 @@ create table Donation (
     InstrumentID varchar(64),
     ConsoleID varchar(64),
     ItemDescription varchar(256) not null,
-    ItemCondition blob not null,
+    ItemCondition text not null,
     primary key (DonationID),
     foreign key (EmployeeID) references Library_Staff (StaffID) on delete cascade,
     foreign key (CDID) references CD (CDID) on delete cascade,
@@ -222,7 +221,7 @@ create table Vendor_Order_Item (
     BookID varchar(64),
     InstrumentID varchar(64),
     ConsoleID varchar(64),
-    Quantity numeric(2, 0) check (Quantity > 0),
+    Quantity numeric(4, 0) check (Quantity > 0),
     CreatedOn date not null,
     primary key (ItemOrderID),
     foreign key (VendorID) references Vendor (VendorID) on delete cascade,

@@ -221,7 +221,7 @@ def check_in():
         u_pass = input()
 
     done = False
-    c_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    c_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     while not done:
         print("What type of Content is being turned in:\n"
@@ -264,7 +264,7 @@ def check_out():
         u_pass = input()
 
     done = False
-    c_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    c_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
     while not done:
         print("What type of Content is being checked out:\n"
@@ -704,7 +704,7 @@ def edit_item(table_type):
               "6.RentalPeriod\n"
               "7.BookID\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5, 6, 7]:
+        if col_num not in ["1", "2", "3", "4", "5", "6", "7"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "2":
@@ -721,7 +721,7 @@ def edit_item(table_type):
               "6.RentalPeriod\n"
               "7.MagazineID\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5, 6, 7]:
+        if col_num not in ["1", "2", "3", "4", "5", "6", "7"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "3":
@@ -737,7 +737,7 @@ def edit_item(table_type):
               "5.RentalPeriod\n"
               "6.DVDID\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5, 6]:
+        if col_num not in ["1", "2", "3", "4", "5", "6"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "4":
@@ -753,7 +753,7 @@ def edit_item(table_type):
               "5.RentalPeriod\n"
               "6.DVDID\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5, 6]:
+        if col_num not in ["1", "2", "3", "4", "5", "6"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "5":
@@ -769,7 +769,7 @@ def edit_item(table_type):
               "5.RentalPeriod\n"
               "6.VHSID\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5, 6]:
+        if col_num not in ["1", "2", "3", "4", "5", "6"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "6":
@@ -784,7 +784,7 @@ def edit_item(table_type):
               "4.RentalPeriod\n"
               "5.ReferenceID\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5, 6]:
+        if col_num not in ["1", "2", "3", "4", "5", "6"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "7":
@@ -799,7 +799,7 @@ def edit_item(table_type):
               "4.Accessories\n"
               "5.IsOut\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4, 5]:
+        if col_num not in ["1", "2", "3", "4", "5"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "8":
@@ -813,7 +813,7 @@ def edit_item(table_type):
               "3.IsOut\n"
               "4.Time Slot\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4]:
+        if col_num not in ["1", "2", "3", "4"]:
             print("Not Found, Error code 10")
             exit(10)
     elif table_type == "9":
@@ -827,7 +827,7 @@ def edit_item(table_type):
               "3.Room Number\n"
               "4.IsOut\n")
         col_num = input()
-        if col_num not in [1, 2, 3, 4]:
+        if col_num not in ["1", "2", "3", "4"]:
             print("Not Found, Error code 10")
             exit(10)
     else:
@@ -922,7 +922,7 @@ def create_acct():
         result = cursor.fetchall()
         patron_id = result + 1
 
-    print("Your Patron ID is:{0}Please keep this information safe.".format(patron_id))
+    print("Your Patron ID is:{0} Please keep this information safe.".format(patron_id))
 
     insert_stmt = ("INSERT INTO Patron(FirstName, LastName, DateOfBirth, Email, Address, PatronID, PhoneNumber) "
                    "VALUES (%s, %s, %s, %s, %s, %s, %s )")

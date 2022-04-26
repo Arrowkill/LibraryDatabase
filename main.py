@@ -79,7 +79,7 @@ START OF UI FUNCTIONS
 
 
 # ADMIN INTERFACE
-def admin_interface():
+def admin_interface(user_id):
     while True:
         # ADMIN Use Cases
         print("Would you like to:\n"
@@ -88,7 +88,11 @@ def admin_interface():
               "3.CHECK AVAILABILITY\n"
               "4.CHECK ACCOUNT\n"
               "5.EDIT DATABASE\n"
-              "6.DELETE ACCOUNT\n"
+              "6.STAFF LIST\n"
+              "7.VENDOR\n"
+              "8.CREATE VENDOR ORDER\n"
+              "9.DONATIONS\n"
+              "10.CREATE EVENT\n"
               "Exit: Exit the program")
         user_choice = input()
 
@@ -106,6 +110,16 @@ def admin_interface():
             check_acct_adm()
         elif user_choice == "5":
             edit_db()
+        elif user_choice == "6":
+            print_table(cursor.execute("SELECT * FROM Library_Staff"))
+        elif user_choice == "7":
+            create_vendor()
+        elif user_choice == "8":
+            create_vendor_order()
+        elif user_choice == "9":
+            make_donation(user_id)
+        elif user_choice == "10":
+            make_event(user_id)
         else:
             print("Unrecognized Command")
 
@@ -116,6 +130,7 @@ def user_interface(g_user, g_pass):
         print("Would you like to:\n"
               "1.CHECK AVAILABILITY\n"
               "2.CHECK ACCOUNT\n"
+              "3.PRINT\n"
               "Exit. Exit the program")
         user_choice = input()
 
@@ -127,6 +142,8 @@ def user_interface(g_user, g_pass):
             check_avail()
         elif user_choice == "2":
             check_acct(g_user, g_pass)
+        elif user_choice == "3":
+            make_print()
         else:
             print("Unrecognized Command")
 
@@ -137,6 +154,7 @@ def anon_user_interface():
         print("Would you like to:\n"
               "1.CHECK AVAILABILITY\n"
               "2.CREATE ACCOUNT\n"
+              "3.PRINT\n"
               "Exit. Exit the program")
         user_choice = input()
 
@@ -148,6 +166,8 @@ def anon_user_interface():
             check_avail()
         elif user_choice == "2":
             create_acct()
+        elif user_choice == "3":
+            make_print()
         else:
             print("Unrecognized Command")
 
@@ -197,6 +217,109 @@ END OF UI FUNCTIONS
 
 START OF DATABASE INVOLVED FUNCTIONS
 '''
+
+
+def create_vendor():
+    print("Input Name")
+    v_name = input()
+    print("Input Address")
+    v_addy = input()
+    print("Input Phone Number")
+    v_phone = input()
+
+    insert_stmt = ("INSERT INTO Vendor(VendorID, Address, PhoneNumber)"
+                   "VALUES (%s, %s, %s)")
+    data = (v_name, v_addy, v_phone)
+    try:
+        cursor.execute(insert_stmt, data)
+    except Error as add_err:
+        print(add_err, "\nUnable to add Vendor")
+    else:
+        print("Vendor added successfully")
+
+
+
+def make_donation(adm_id):
+    try:
+        cursor.execute("SELECT * FROM Library_Event")  # previously "SELECT count(*) FROM Printing"
+    except Error as count_err:
+        print(count_err, "Unable to determine Library_ID")
+    else:
+        result = cursor.fetchall()
+        donation_id = len(result) + 1
+    print("Input Item Type:\n"
+          "1.Books\n"
+          "2.Magazines\n"
+          "3.DVDs\n"
+          "4.CDs\n"
+          "5.VHS Tapes\n"
+          "6.Reference Material\n"
+          "7.Instrument\n"
+          "8.Console")
+    donation_type = input()
+    print("Input Item ID")
+    item_id = input()
+    add_item(donation_type)
+    print("Input Item Description: ")
+    donation_desc = input()
+    print("Input Item Condition: ")
+    donation_cond = input()
+
+    if donation_type == "1":
+        donation_type = "BookID"
+    elif donation_type == "2":
+        donation_type = "MagazineID"
+    elif donation_type == "3":
+        donation_type = "DVDID"
+    elif donation_type == "4":
+        donation_type = "CDID"
+    elif donation_type == "5":
+        donation_type = "VHSID"
+    elif donation_type == "6":
+        donation_type = "ReferenceMaterialID"
+    elif donation_type == "7":
+        donation_type = "InstrumentID"
+    elif donation_type == "8":
+        donation_type = "ConsoleID"
+
+    insert_stmt = ("INSERT INTO Donation(DonationID, EmployeeID, %s, ItemDescription, ItemCondition) "
+                   "VALUES (%s, %s, %s, %s, %s)")
+    data = (donation_type, donation_id, adm_id, item_id, donation_desc, donation_cond)
+
+    try:
+        cursor.execute(insert_stmt, data)
+    except Error as add_err:
+        print(add_err, "\nUnable to Donate")
+    else:
+        print("Donation completed successfully")
+
+
+def make_event(adm_id):
+    try:
+        cursor.execute("SELECT * FROM Library_Event")  # previously "SELECT count(*) FROM Printing"
+    except Error as count_err:
+        print(count_err, "Unable to determine Library_ID")
+    else:
+        result = cursor.fetchall()
+        event_id = len(result) + 1
+
+    print("Event Type: ")
+    event_type = input()
+    print("Event Frequency: ")
+    event_freq = input()
+    print("Event Frequency Unit: ")
+    event_freq_unit = input()
+
+    insert_stmt = ("INSERT INTO Library_Event(EventID, StaffID, EventType, EventFrequencyNumber, EventFrequencyUnit) "
+                   "VALUES (%s, %s, %s, %s, %s)")
+    data = (event_id, adm_id, event_type, event_freq, event_freq_unit)
+
+    try:
+        cursor.execute(insert_stmt, data)
+    except Error as add_err:
+        print(add_err, "\nUnable to Create Event")
+    else:
+        print("Event Created successfully")
 
 
 # Print whole table of given cursor
@@ -859,6 +982,35 @@ def edit_col(content_type, db_id, item_id, col_num, value):
         print("Updated Item")
 
 
+def make_print():
+    try:
+        cursor.execute("SELECT * FROM Printing")  # previously "SELECT count(*) FROM Printing"
+    except Error as count_err:
+        print(count_err, "Unable to determine Printing_ID")
+    else:
+        result = cursor.fetchall()
+        print_id = len(result) + 1
+    print("How many pages:")
+    page_count = int(input())
+    print("In Color? Yes/No:")
+    page_color = input()
+    if page_color == "Yes":
+        page_cost = page_count * 0.05
+    else:
+        page_cost = page_count * 0.03
+
+    print("Page Cost will be:", page_cost)
+    insert_stmt = ("INSERT INTO Printing(PrintID, PrintCost, PageNumber, Color) "
+                   "VALUES (%s, %s, %s, %s)")
+    data = (print_id, page_cost, page_count, page_color)
+
+    try:
+        cursor.execute(insert_stmt, data)
+    except Error as add_err:
+        print(add_err, "\nUnable to Print")
+    else:
+        print("Print completed successfully")
+
 '''
 END OF EDIT DATABASE
 CHECK ACCOUNT
@@ -915,12 +1067,12 @@ def create_acct():
     print("A password for your account:")
     patron_password = input()
     try:
-        cursor.execute("SELECT count(*) FROM Patron")
+        cursor.execute("SELECT * FROM Patron")  # previously "SELECT count(*) FROM Patron"
     except Error as count_err:
         print(count_err, "Unable to determine patron ID")
     else:
         result = cursor.fetchall()
-        patron_id = result + 1
+        patron_id = len(result) + 1
 
     print("Your Patron ID is:{0} Please keep this information safe.".format(patron_id))
 
@@ -995,7 +1147,7 @@ else:
 
     # ADMIN USER/LIBRARY STAFF
     if Admin:
-        admin_interface()
+        admin_interface(user_name)
     # GENERIC USER
     elif not Anon:
         user_interface(user_name, user_pass)

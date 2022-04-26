@@ -217,7 +217,8 @@ END OF UI FUNCTIONS
 
 START OF DATABASE INVOLVED FUNCTIONS
 '''
-
+def create_vendor_order():
+    print("test")
 
 def create_vendor():
     print("Input Name")
@@ -236,7 +237,6 @@ def create_vendor():
         print(add_err, "\nUnable to add Vendor")
     else:
         print("Vendor added successfully")
-
 
 
 def make_donation(adm_id):

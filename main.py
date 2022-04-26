@@ -1,5 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
+import random
+from datetime import date
 
 '''
 Developed by Jackson Johanek for UNT CSCE 4350
@@ -217,8 +219,93 @@ END OF UI FUNCTIONS
 
 START OF DATABASE INVOLVED FUNCTIONS
 '''
+
+
 def create_vendor_order():
-    print("test")
+    try:
+        cursor.execute("SELECT * FROM Vendor_Order")  # previously "SELECT count(*) FROM Printing"
+    except Error as count_err:
+        print(count_err, "Unable to determine Vendor_ID")
+    else:
+        result = cursor.fetchall()
+        v_id = len(result) + 1
+    o_size = random.randint(1, 1000)
+
+    current_date = str(date.today())
+
+    insert_stmt = ("INSERT INTO Vendor_Order(OrderID, Total, CreatedOn)"
+                   "VALUES (%s, %s, %s)")
+    data = (v_id, o_size, current_date)
+    try:
+        cursor.execute(insert_stmt, data)
+    except Error as add_err:
+        print(add_err, "\nUnable to add Vendor_Order")
+    else:
+        print("Vendor Order added successfully")
+
+    try:
+        cursor.execute("SELECT * FROM Vendor_Order_Item")  # previously "SELECT count(*) FROM Printing"
+    except Error as count_err:
+        print(count_err, "Unable to determine Vendor_Item_ID")
+    else:
+        result = cursor.fetchall()
+        v_i_id = len(result) + 1
+
+    # VENDOR LIST
+    try:
+        cursor.execute("SELECT Vendor.VendorID FROM Vendor")
+    except Error as select_err:
+        print(select_err, "Unable to determine Vendor Order")
+    else:
+        v_result = cursor.fetchall()
+
+    x = random.randint(0, len(v_result))
+    v_id = v_result[x]
+
+    print("ItemID:")
+    i_id = input()
+    print("Quantity:")
+    i_q = input()
+
+    print("Input Item Type:\n"
+          "1.Books\n"
+          "2.Magazines\n"
+          "3.DVDs\n"
+          "4.CDs\n"
+          "5.VHS Tapes\n"
+          "6.Reference Material\n"
+          "7.Instrument\n"
+          "8.Console")
+    donation_type = input()
+    print("Input Item ID")
+    item_id = input()
+    if donation_type == "1":
+        donation_type = "BookID"
+    elif donation_type == "2":
+        donation_type = "MagazineID"
+    elif donation_type == "3":
+        donation_type = "DVDID"
+    elif donation_type == "4":
+        donation_type = "CDID"
+    elif donation_type == "5":
+        donation_type = "VHSID"
+    elif donation_type == "6":
+        donation_type = "ReferenceMaterialID"
+    elif donation_type == "7":
+        donation_type = "InstrumentID"
+    elif donation_type == "8":
+        donation_type = "ConsoleID"
+
+    insert_stmt = ("INSERT INTO Vendor_Order_Item(ItemOrderID, VendorID, %s, Quantity, CreatedOn)"
+                   "VALUES (%s, %s, %s, %s, %s)")
+    data = (donation_type, v_i_id, v_id, item_id, i_q, current_date)
+    try:
+        cursor.execute(insert_stmt, data)
+    except Error as add_err:
+        print(add_err, "\nUnable to add Vendor_Order Item")
+    else:
+        print("Vendor Order Item added successfully")
+
 
 def create_vendor():
     print("Input Name")
